@@ -1,7 +1,12 @@
 const graphql = require("graphql")
 const _ = require("lodash")
 
-const { GraphQLSchema, GraphQLObjectType, GraphQLString } = graphql
+const { 
+    GraphQLSchema, 
+    GraphQLObjectType, 
+    GraphQLString, 
+    GraphQLID,
+    GraphQLInt } = graphql
 
 //dummy data
 var users = [
@@ -10,11 +15,27 @@ var users = [
     { id: "3", name: "vbt" }
 ]
 
+var products = [
+    { id: "1", name: "product1", stock: 100, cost: 123 },
+    { id: "2", name: "product2", stock: 110, cost: 456 },
+    { id: "3", name: "product3", stock: 120, cost: 789 }
+]
+
 const UserType = new GraphQLObjectType({
     name:"User",
     fields:() => ({ //it needs to be a function because of relation between different objects
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
         name: { type: GraphQLString },
+    })
+})
+
+const ProductType = new GraphQLObjectType({
+    name: "Product",
+    fields: () => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        stock: { type: GraphQLInt},
+        cost: { type: GraphQLInt }
     })
 })
 
@@ -25,12 +46,24 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args:{
                 id: {
-                    type: GraphQLString
+                    type: GraphQLID
                 }
             },
             resolve(parent, args){ 
                 // function to get data from db or other data source
                 return _.find(users, {id: args.id})
+            }
+        },
+        product: {
+            type: ProductType,
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve(parent, args) {
+                // function to get data from db or other data source
+                return _.find(products, { id: args.id })
             }
         }
     }
