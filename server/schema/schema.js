@@ -1,5 +1,6 @@
 const graphql = require("graphql")
-const _ = require("lodash")
+const User = require("../models/user")
+const Product = require("../models/product")
 
 const { 
     GraphQLSchema, 
@@ -9,21 +10,6 @@ const {
     GraphQLInt,
     GraphQLList } = graphql
 
-//dummy data
-var users = [
-    { id: "1", name: "ahmet" },
-    { id: "2", name: "veli" },
-    { id: "3", name: "vbt" }
-]
-
-var products = [
-    { id: "1", name: "product1", stock: 100, cost: 123, sellerId: "1" },
-    { id: "2", name: "product2", stock: 110, cost: 456, sellerId: "2" },
-    { id: "3", name: "product3", stock: 120, cost: 789, sellerId: "3" },
-    { id: "4", name: "product4", stock: 130, cost: 111, sellerId: "3" },
-    { id: "5", name: "product5", stock: 140, cost: 222, sellerId: "2" },
-    { id: "6", name: "product6", stock: 150, cost: 333, sellerId: "1" }
-]
 
 const UserType = new GraphQLObjectType({
     name:"User",
@@ -33,7 +19,7 @@ const UserType = new GraphQLObjectType({
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent,args){
-                return _.filter(products, { sellerId: parent.id })
+                // return _.filter(products, { sellerId: parent.id })
             }
         }
     })
@@ -49,7 +35,7 @@ const ProductType = new GraphQLObjectType({
         seller: {
             type: UserType,
             resolve(parent, args){
-                return _.find(users, { id: parent.id })
+                // return _.find(users, { id: parent.id })
             }
         }
     })
@@ -66,8 +52,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args){ 
-                // function to get data from db or other data source
-                return _.find(users, {id: args.id})
+                // return _.find(users, {id: args.id})
             }
         },
         product: {
@@ -78,19 +63,19 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                return _.find(products, { id: args.id })
+                // return _.find(products, { id: args.id })
             }
         },
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
-                return users
+                // return users
             }
         },
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent, args) {
-                return products
+                // return products
             }
         },
     }
