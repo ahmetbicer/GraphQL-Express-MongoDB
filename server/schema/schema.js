@@ -6,7 +6,8 @@ const {
     GraphQLObjectType, 
     GraphQLString, 
     GraphQLID,
-    GraphQLInt } = graphql
+    GraphQLInt,
+    GraphQLList } = graphql
 
 //dummy data
 var users = [
@@ -18,7 +19,10 @@ var users = [
 var products = [
     { id: "1", name: "product1", stock: 100, cost: 123, sellerId: "1" },
     { id: "2", name: "product2", stock: 110, cost: 456, sellerId: "2" },
-    { id: "3", name: "product3", stock: 120, cost: 789, sellerId: "3" }
+    { id: "3", name: "product3", stock: 120, cost: 789, sellerId: "3" },
+    { id: "4", name: "product4", stock: 130, cost: 111, sellerId: "3" },
+    { id: "5", name: "product5", stock: 140, cost: 222, sellerId: "2" },
+    { id: "6", name: "product6", stock: 150, cost: 333, sellerId: "1" }
 ]
 
 const UserType = new GraphQLObjectType({
@@ -26,6 +30,12 @@ const UserType = new GraphQLObjectType({
     fields:() => ({ //it needs to be a function because of relation between different objects
         id: { type: GraphQLID },
         name: { type: GraphQLString },
+        products: {
+            type: new GraphQLList(ProductType),
+            resolve(parent,args){
+                return _.filter(products, { sellerId: parent.id })
+            }
+        }
     })
 })
 
@@ -68,10 +78,21 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                // function to get data from db or other data source
                 return _.find(products, { id: args.id })
             }
-        }
+        },
+        users: {
+            type: new GraphQLList(UserType),
+            resolve(parent, args) {
+                return users
+            }
+        },
+        products: {
+            type: new GraphQLList(ProductType),
+            resolve(parent, args) {
+                return products
+            }
+        },
     }
 })
 
