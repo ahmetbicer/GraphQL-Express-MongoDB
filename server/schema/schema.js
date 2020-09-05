@@ -1,6 +1,7 @@
 const graphql = require("graphql")
 const User = require("../models/user")
 const Product = require("../models/product")
+const { Mongoose } = require("mongoose")
 
 const { 
     GraphQLSchema, 
@@ -19,7 +20,7 @@ const UserType = new GraphQLObjectType({
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent,args){
-                // return _.filter(products, { sellerId: parent.id })
+                return Product.find({sellerId: parent.id})
             }
         }
     })
@@ -35,7 +36,7 @@ const ProductType = new GraphQLObjectType({
         seller: {
             type: UserType,
             resolve(parent, args){
-                // return _.find(users, { id: parent.id })
+                return User.findById(parent.sellerId)
             }
         }
     })
@@ -52,7 +53,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args){ 
-                // return _.find(users, {id: args.id})
+                return User.findById(args.id)
             }
         },
         product: {
@@ -63,19 +64,19 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                // return _.find(products, { id: args.id })
+                return Product.findById(args.id)
             }
         },
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
-                // return users
+                return User.find({})
             }
         },
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent, args) {
-                // return products
+                return Product({})
             }
         },
     }
