@@ -76,7 +76,7 @@ const RootQuery = new GraphQLObjectType({
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent, args) {
-                return Product({})
+                return Product.find({})
             }
         },
     }
