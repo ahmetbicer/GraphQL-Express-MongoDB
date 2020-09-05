@@ -16,9 +16,9 @@ var users = [
 ]
 
 var products = [
-    { id: "1", name: "product1", stock: 100, cost: 123 },
-    { id: "2", name: "product2", stock: 110, cost: 456 },
-    { id: "3", name: "product3", stock: 120, cost: 789 }
+    { id: "1", name: "product1", stock: 100, cost: 123, sellerId: "1" },
+    { id: "2", name: "product2", stock: 110, cost: 456, sellerId: "2" },
+    { id: "3", name: "product3", stock: 120, cost: 789, sellerId: "3" }
 ]
 
 const UserType = new GraphQLObjectType({
@@ -35,7 +35,13 @@ const ProductType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         stock: { type: GraphQLInt},
-        cost: { type: GraphQLInt }
+        cost: { type: GraphQLInt },
+        seller: {
+            type: UserType,
+            resolve(parent, args){
+                return _.find(users, { id: parent.id })
+            }
+        }
     })
 })
 
