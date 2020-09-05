@@ -81,6 +81,53 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
+const Mutation = new GraphQLObjectType({
+    name:"Mutation",
+    fields:{
+        addUser: {
+            type: UserType,
+            args: {
+                name: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent,args){
+                let user = new User({
+                    name: args.name
+                })
+                return user.save()
+            }
+        },
+        addProduct: {
+            type: ProductType,
+            args: {
+                name: {
+                    type: GraphQLString
+                },
+                stock: {
+                    type: GraphQLInt
+                },
+                cost: {
+                    type: GraphQLInt
+                },
+                sellerId: {
+                    type: GraphQLString
+                },
+            },
+            resolve(parent, args) {
+                let product = new Product({
+                    name: args.name,
+                    stock: args.stock,
+                    cost: args.cost,
+                    sellerId: args.sellerId
+                })
+                return product.save()
+            }
+        }
+    }
+})
+
 module.exports = new GraphQLSchema({
-    query:RootQuery
+    query:RootQuery,
+    mutation: Mutation
 })
