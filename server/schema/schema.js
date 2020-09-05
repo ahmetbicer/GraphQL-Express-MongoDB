@@ -1,13 +1,20 @@
 const graphql = require("graphql")
+const _ = require("lodash")
 
 const { GraphQLSchema, GraphqlObjectType, GraphQLString } = graphql
+
+//dummy data
+var users = [
+    { id: "1", name: "ahmet" },
+    { id: "2", name: "veli" },
+    { id: "3", name: "vbt" }
+]
 
 const UserType = new GraphqlObjectType({
     name:"User",
     fields:() => ({ //it needs to be a function because of relation between different objects
         id: { type: GraphQLString },
         name: { type: GraphQLString },
-        gender: { type: GraphQLString }
     })
 })
 
@@ -22,7 +29,8 @@ const RootQuery = new GraphqlObjectType({
                 }
             },
             resolve(parent, args){ 
-                // function to get data from db
+                // function to get data from db or other data source
+                return _.find(users, {id: args.id})
             }
         }
     }
