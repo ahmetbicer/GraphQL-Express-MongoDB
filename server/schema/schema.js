@@ -1,7 +1,7 @@
 const graphql = require("graphql")
 const _ = require("lodash")
 
-const { GraphQLSchema, GraphqlObjectType, GraphQLString } = graphql
+const { GraphQLSchema, GraphQLObjectType, GraphQLString } = graphql
 
 //dummy data
 var users = [
@@ -10,7 +10,7 @@ var users = [
     { id: "3", name: "vbt" }
 ]
 
-const UserType = new GraphqlObjectType({
+const UserType = new GraphQLObjectType({
     name:"User",
     fields:() => ({ //it needs to be a function because of relation between different objects
         id: { type: GraphQLString },
@@ -18,7 +18,7 @@ const UserType = new GraphqlObjectType({
     })
 })
 
-const RootQuery = new GraphqlObjectType({
+const RootQuery = new GraphQLObjectType({
     name: "RootQueryType",
     fields:{
         user:{
