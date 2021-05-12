@@ -1,7 +1,7 @@
 
 ## What is this?
 
-This code is a simple graphql implementation for my -coming soon- medium article.
+This code is a simple graphql implementation for my [medium](https://medium.com/hardwareandro/graphql-basics-with-express-and-mongodb-5a69a379db14) article.
 
 ## How To Use?
 
